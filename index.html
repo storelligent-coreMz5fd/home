@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storelligent | Your Shop. Supercharged by AI.</title>
+    <meta name="description" content="Turn Your Local Shop into a 24/7 AI-Powered Business. Storelligent gives every local shop an AI assistant, instant website, and a hyperlocal customer feed.">
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Enables dark mode toggling via class
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8765D6',      // User Brand Color
+                        primaryHover: '#7552C6', 
+                        primaryLight: '#A68AEE', 
+                        dark: '#0F172A',         
+                        darker: '#020617',       
+                        light: '#F8FAFC',        
+                        muted: '#64748B',        
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Poppins', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 40px rgba(0, 0, 0, 0.05)',
+                        'soft-dark': '0 4px 40px rgba(0, 0, 0, 0.3)',
+                        'glow': '0 0 40px rgba(135, 101, 214, 0.25)',
+                        'card': '0 1px 3px rgba(0,0,0,0.05), 0 10px 20px rgba(0,0,0,0.02)',
+                    },
+                    animation: {
+                        'marquee': 'marquee 40s linear infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom Utility CSS -->
+    <style>
+        /* Base Resets & Utilities */
+        body { font-family: 'Inter', sans-serif; overflow-x: hidden; transition: background-color 0.3s ease, color 0.3s ease; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #8765D6, #A68AEE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #8765D6, #9A7BE0);
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .dark .glass-nav {
+            background: rgba(15, 23, 42, 0.85);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+        .dark ::-webkit-scrollbar-thumb:hover { background: #64748B; }
+
+        /* Phone Mockup Styling */
+        .phone-frame {
+            box-shadow: inset 0 0 0 2px #334155, 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .dark .phone-frame {
+            box-shadow: inset 0 0 0 2px #475569, 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .dynamic-island {
+            box-shadow: inset 0 0 4px rgba(255,255,255,0.2);
+        }
+
+        /* Text Blur Face In/Out Animation */
+        .text-changer {
+            display: inline-block;
+            transition: opacity 0.6s ease, filter 0.6s ease, transform 0.6s ease;
+            will-change: opacity, filter, transform;
+            min-width: 250px; 
+        }
+        .text-changer.fade-out {
+            opacity: 0;
+            filter: blur(12px);
+            transform: scale(0.95);
+        }
+        .text-changer.fade-in {
+            opacity: 1;
+            filter: blur(0);
+            transform: scale(1);
+        }
+
+        /* Logo Idle Animation */
+        @keyframes idleBreath {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+        .animate-idle {
+            animation: idleBreath 4s ease-in-out infinite;
+            transform-origin: center;
+        }
+    </style>
+</head>
+<body class="antialiased bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 selection:bg-primary selection:text-white transition-colors duration-300">
+
+    <!-- Global SVG Definitions for New Brand Logo -->
+    <svg width="0" height="0" class="hidden">
+        <defs>
+            <path id="brand-roof" d="M270 235 L730 235 L860 450 Q860 520 800 520 Q740 520 700 450 Q680 520 610 520 Q540 520 500 450 Q460 520 390 520 Q320 520 300 450 Q260 520 200 520 Q140 520 140 450 Z" />
+            <path id="brand-frame-left" d="M210 560 h60 v260 q0 30 30 30 h180 q35 0 55 30 h-235 q-90 0 -90 -90z" />
+            <path id="brand-frame-right" d="M790 560 h-60 v260 q0 30 -30 30 h-180 q-35 0 -55 30 h235 q90 0 90 -90z" />
+            <g id="brand-pin">
+                <path d="M500 550 C455 550 420 585 420 635 C420 690 500 780 500 780 C500 780 580 690 580 635 C580 585 545 550 500 550 Z" />
+                <circle cx="500" cy="630" r="24" fill="#ffffff" />
+            </g>
+        </defs>
+    </svg>
+
+    <header id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 py-5">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <!-- LOGO TOGGLE: To show the logo, remove the 'hidden' class from the div below. To hide it, keep 'hidden' -->
+                <div class="hidden w-12 h-12 text-primary drop-shadow-md hover:opacity-80 transition-all duration-200 active:scale-90 cursor-pointer animate-idle flex items-center justify-center">
+                    <svg viewBox="0 0 1000 1000" class="w-full h-full">
+                        <g fill="currentColor">
+                            <use href="#brand-roof" />
+                            <use href="#brand-frame-left" />
+                            <use href="#brand-frame-right" />
+                            <use href="#brand-pin" />
+                        </g>
+                    </svg>
+                </div>
+                <span class="font-heading font-bold text-xl tracking-tight text-dark dark:text-white">Storelligent</span>
+            </a>
+            
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="#features" class="text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primaryLight transition-colors">Features</a>
+                <a href="#how-it-works" class="text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primaryLight transition-colors">How It Works</a>
+                <a href="#pricing" class="text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primaryLight transition-colors">Pricing</a>
+                <a href="#testimonials" class="text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primaryLight transition-colors">Early Access</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="hidden md:flex items-center gap-4">
+                <button class="open-modal-btn text-sm font-medium text-dark dark:text-white hover:text-primary dark:hover:text-primaryLight transition-colors px-2">Login</button>
+                <button class="open-modal-btn bg-dark dark:bg-white text-white dark:text-dark px-5 py-2.5 rounded-full text-sm font-medium hover:bg-primary dark:hover:bg-primaryLight transition-colors shadow-lg">Get Started Free <i class="fa-solid fa-arrow-right ml-1 text-xs"></i></button>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <div class="md:hidden flex items-center gap-3">
+                <button id="mobile-menu-btn" class="text-dark dark:text-white p-2 focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="absolute top-full left-0 w-full bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-slate-800 shadow-xl hidden flex-col py-4 px-6 gap-4 md:hidden">
+            <a href="#features" class="text-base font-medium text-dark dark:text-white py-2">Features</a>
+            <a href="#how-it-works" class="text-base font-medium text-dark dark:text-white py-2">How It Works</a>
+            <a href="#pricing" class="text-base font-medium text-dark dark:text-white py-2">Pricing</a>
+            <a href="#testimonials" class="text-base font-medium text-dark dark:text-white py-2">Early Access</a>
+            <hr class="border-gray-100 dark:border-slate-800 my-2">
+            <button class="open-modal-btn w-full text-left text-base font-medium text-dark dark:text-white py-2">Login</button>
+            <button class="open-modal-btn w-full bg-dark dark:bg-white text-white dark:text-dark px-5 py-3 rounded-xl text-sm font-medium text-center">Get Started Free</button>
+        </div>
+    </header>
+
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-white dark:bg-slate-900">
+        <!-- Background Accents -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[500px] bg-primary/10 rounded-full blur-[100px] -z-10 animate-pulse-slow"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+            <!-- Left Content -->
+            <div class="reveal max-w-2xl">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold tracking-wide mb-6">
+                    <i class="fa-solid fa-bolt"></i> Made For Local Business
+                </div>
+                <!-- Dynamic Title -->
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold leading-[1.2] mb-6 tracking-tight text-darker dark:text-white min-h-[140px] sm:min-h-[160px] md:min-h-[150px] lg:min-h-[180px]">
+                    Turn Your Shop Into a <br>
+                    <span class="text-gradient text-changer fade-in mt-2" id="rotating-text">24/7 AI Business</span>
+                </h1>
+                
+                <p class="text-lg text-slate-500 dark:text-slate-400 mb-8 leading-relaxed max-w-lg">
+                    No coding. No staff needed. Storelligent gives every local shop an AI assistant, an instant website, and a hyperlocal customer feed. Build for modern Bharat.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 mb-10">
+                    <button class="open-modal-btn bg-gradient-primary text-white px-8 py-4 rounded-full font-medium shadow-glow hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+                        Start For Free <i class="fa-solid fa-arrow-right text-sm"></i>
+                    </button>
+                    <button class="open-modal-btn bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-dark dark:text-white px-8 py-4 rounded-full font-medium hover:border-gray-300 dark:hover:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-2 shadow-sm">
+                        <i class="fa-regular fa-circle-play text-primary"></i> Watch Demo
+                    </button>
+                </div>
+
+                <div class="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400 font-medium">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-rocket text-primary"></i> Easy Setup
+                    </div>
+                    <div class="w-1 h-1 rounded-full bg-gray-300 dark:bg-slate-600"></div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-check-double text-primary"></i> Ready for Early Access
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Content: Fixed Pro Phone Mockup -->
+            <div class="reveal delay-200 relative flex justify-center lg:justify-end z-10">
+                <!-- Glowing back blob -->
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-primary/20 blur-[80px] rounded-full"></div>
+                
+                <!-- Phone Body -->
+                <div class="relative w-[320px] h-[650px] bg-white dark:bg-slate-900 rounded-[3rem] border-[14px] border-darker dark:border-slate-800 shadow-2xl overflow-hidden phone-frame">
+                    <!-- Dynamic Island -->
+                    <div class="absolute top-2 left-1/2 -translate-x-1/2 w-24 h-7 bg-darker dark:bg-black rounded-full z-20 dynamic-island flex items-center justify-between px-2">
+                        <div class="w-2 h-2 rounded-full bg-green-500/20 flex items-center justify-center"><div class="w-1 h-1 rounded-full bg-green-500"></div></div>
+                        <div class="w-3 h-3 rounded-full bg-gray-800 dark:bg-slate-700"></div>
+                    </div>
+
+                    <!-- App UI -->
+                    <div class="w-full h-full bg-slate-50 dark:bg-slate-900 pt-12 pb-6 flex flex-col">
+                        <!-- Top Nav -->
+                        <div class="px-5 py-3 flex justify-between items-center bg-white dark:bg-slate-800 border-b border-gray-100 dark:border-slate-700">
+                            <span class="font-heading font-bold text-lg text-dark dark:text-white">Storelligent</span>
+                            <i class="fa-regular fa-bell text-gray-400"></i>
+                        </div>
+                        
+                        <!-- Feed -->
+                        <div class="flex-1 overflow-hidden p-4 space-y-4">
+                            <!-- Post Card -->
+                            <div class="bg-white dark:bg-slate-800 rounded-2xl p-3 shadow-card border border-gray-100 dark:border-slate-700">
+                                <div class="flex justify-between items-center mb-3">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary"><i class="fa-solid fa-shirt text-xs"></i></div>
+                                        <div>
+                                            <div class="text-sm font-bold text-dark dark:text-white leading-tight">StyleHub Jaipur</div>
+                                            <div class="text-[10px] text-slate-500 dark:text-slate-400">0.3 km away</div>
+                                        </div>
+                                    </div>
+                                    <i class="fa-solid fa-ellipsis text-gray-400"></i>
+                                </div>
+                                <div class="w-full h-32 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 mb-3 relative flex items-center justify-center overflow-hidden group">
+                                    <i class="fa-solid fa-image text-3xl text-primary/30"></i>
+                                    <div class="absolute bottom-2 left-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur text-primary text-[10px] font-bold px-2 py-1 rounded-md shadow-sm">
+                                        Flash Offer 30% OFF
+                                    </div>
+                                </div>
+                                <div class="flex gap-4 text-gray-400 text-sm px-1">
+                                    <i class="fa-regular fa-heart hover:text-red-500 transition-colors cursor-pointer"></i>
+                                    <i class="fa-regular fa-comment hover:text-blue-500 transition-colors cursor-pointer"></i>
+                                    <i class="fa-regular fa-paper-plane hover:text-primary transition-colors cursor-pointer ml-auto"></i>
+                                </div>
+                            </div>
+
+                            <!-- AI Notification Chip -->
+                            <div class="bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800/30 rounded-xl p-3 flex items-start gap-3 shadow-sm">
+                                <div class="mt-0.5 text-green-500"><i class="fa-solid fa-robot"></i></div>
+                                <div>
+                                    <div class="text-xs font-bold text-green-800 dark:text-green-400">AI Assistant Active</div>
+                                    <div class="text-[10px] text-green-600 dark:text-green-500 mt-0.5">Successfully replied to 3 customers and booked 1 order.</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Bottom Nav -->
+                        <div class="px-6 py-4 bg-white dark:bg-slate-800 border-t border-gray-100 dark:border-slate-700 flex justify-between text-gray-400 dark:text-slate-500 mt-auto">
+                            <i class="fa-solid fa-house text-primary"></i>
+                            <i class="fa-solid fa-compass"></i>
+                            <div class="w-10 h-10 -mt-6 bg-dark dark:bg-primary text-white rounded-full flex items-center justify-center shadow-lg border-4 border-white dark:border-slate-800"><i class="fa-solid fa-plus"></i></div>
+                            <i class="fa-solid fa-message"></i>
+                            <i class="fa-regular fa-user"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="w-full bg-darker py-4 overflow-hidden border-y border-white/10 dark:border-slate-800/50">
+        <div class="flex whitespace-nowrap animate-marquee hover:[animation-play-state:paused] cursor-default">
+            <!-- First Set -->
+            <div class="flex items-center text-sm font-medium text-gray-300">
+                <span class="mx-8"><i class="fa-solid fa-basket-shopping text-primary mr-2"></i> Auto-restock alerts for Groceries</span>
+                <span class="text-gray-600">|</span>
+                <span class="mx-8"><i class="fa-solid fa-scissors text-primary mr-2"></i> 24/7 Smart Bookings for Salons</span>
+                <span class="text-gray-600">|</span>
+                <span class="mx-8"><i class="fa-solid fa-dumbbell text-primary mr-2"></i> Gym membership tracking made easy</span>
+                <span class="text-gray-600">|</span>
+                <span class="mx-8"><i class="fa-solid fa-shirt text-primary mr-2"></i> Showcase fashion inventory directly</span>
+                <span class="text-gray-600">|</span>
+            </div>
+            <!-- Duplicate Set for Seamless Loop -->
+            <div class="flex items-center text-sm font-medium text-gray-300">
+                <span class="mx-8"><i class="fa-solid fa-basket-shopping text-primary mr-2"></i> Auto-restock alerts for Groceries</span>
+                <span class="text-gray-600">|</span>
+                <span class="mx-8"><i class="fa-solid fa-scissors text-primary mr-2"></i> 24/7 Smart Bookings for Salons</span>
+                <span class="text-gray-600">|</span>
+                <span class="mx-8"><i class="fa-solid fa-dumbbell text-primary mr-2"></i> Gym membership tracking made easy</span>
+                <span class="text-gray-600">|</span>
+                <span class="mx-8"><i class="fa-solid fa-shirt text-primary mr-2"></i> Showcase fashion inventory directly</span>
+                <span class="text-gray-600">|</span>
+            </div>
+        </div>
+    </div>
+
+    <section class="py-24 bg-light dark:bg-slate-900/50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-heading font-bold text-dark dark:text-white mb-4">Why Local Shops Are Losing <br> <span class="text-slate-500 dark:text-slate-400 text-2xl font-medium">(And How We Fix It)</span></h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+                <!-- The Old Way -->
+                <div class="reveal bg-white dark:bg-slate-800 rounded-3xl p-8 lg:p-12 border border-gray-100 dark:border-slate-700 shadow-soft dark:shadow-soft-dark">
+                    <div class="flex items-center gap-4 mb-8 pb-6 border-b border-gray-100 dark:border-slate-700">
+                        <div class="w-12 h-12 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center text-red-500 text-xl">
+                            <i class="fa-solid fa-arrow-trend-down"></i>
+                        </div>
+                        <h3 class="text-2xl font-heading font-bold text-dark dark:text-white">The Old Way</h3>
+                    </div>
+                    <ul class="space-y-5">
+                        <li class="flex items-start gap-4">
+                            <i class="fa-regular fa-circle-xmark text-red-400 mt-1 text-lg"></i>
+                            <span class="text-slate-500 dark:text-slate-300">Staff costs eating up thousands every single month.</span>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <i class="fa-regular fa-circle-xmark text-red-400 mt-1 text-lg"></i>
+                            <span class="text-slate-500 dark:text-slate-300">Missed customer messages and orders during night hours.</span>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <i class="fa-regular fa-circle-xmark text-red-400 mt-1 text-lg"></i>
+                            <span class="text-slate-500 dark:text-slate-300">No professional online presence or website.</span>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <i class="fa-regular fa-circle-xmark text-red-400 mt-1 text-lg"></i>
+                            <span class="text-slate-500 dark:text-slate-300">Zero visibility to customers living just 500 meters away.</span>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <i class="fa-regular fa-circle-xmark text-red-400 mt-1 text-lg"></i>
+                            <span class="text-slate-500 dark:text-slate-300">Wasting hours typing manual replies on WhatsApp.</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- The New Way -->
+                <div class="reveal delay-200 bg-darker dark:bg-slate-800/80 rounded-3xl p-8 lg:p-12 shadow-2xl relative overflow-hidden dark:border dark:border-primary/20">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-primary/20 blur-[60px] rounded-full -z-0"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-4 mb-8 pb-6 border-b border-white/10 dark:border-slate-700">
+                            <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xl">
+                                <i class="fa-solid fa-arrow-trend-up"></i>
+                            </div>
+                            <h3 class="text-2xl font-heading font-bold text-white">The Storelligent Way</h3>
+                        </div>
+                        <ul class="space-y-5">
+                            <li class="flex items-start gap-4">
+                                <i class="fa-solid fa-circle-check text-primary mt-1 text-lg"></i>
+                                <span class="text-gray-300">AI handles ALL customer chats seamlessly 24/7.</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <i class="fa-solid fa-circle-check text-primary mt-1 text-lg"></i>
+                                <span class="text-gray-300">Auto e-commerce website ready in exactly 60 seconds.</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <i class="fa-solid fa-circle-check text-primary mt-1 text-lg"></i>
+                                <span class="text-gray-300">Hyperlocal feed reaches customers in a 4-6 km radius.</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <i class="fa-solid fa-circle-check text-primary mt-1 text-lg"></i>
+                                <span class="text-gray-300">AI negotiates prices and books orders autonomously.</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <i class="fa-solid fa-circle-check text-primary mt-1 text-lg"></i>
+                                <span class="text-gray-300">Zero human staff needed for complete digital operations.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="py-24 bg-white dark:bg-slate-900">
+        <div class="max-w-7xl mx-auto px-4 md:px-6">
+            <div class="text-center max-w-2xl mx-auto mb-12 md:mb-16 reveal">
+                <span class="text-primary font-bold text-xs md:text-sm tracking-wider mb-2 block">Core Features</span>
+                <h2 class="text-2xl md:text-4xl font-heading font-bold text-dark dark:text-white mb-3 md:mb-4">Everything Your Shop Needs</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-sm md:text-lg px-4">Six powerful enterprise-grade tools, bundled into one simple app.</p>
+            </div>
+
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+                <!-- Feature 1 -->
+                <div class="reveal bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-4 md:p-8 rounded-xl md:rounded-2xl shadow-sm dark:shadow-none hover:shadow-soft dark:hover:border-primary/50 hover:border-primary/30 transition-all duration-300 group">
+                    <div class="w-10 h-10 md:w-14 md:h-14 rounded-lg md:rounded-xl bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-500 text-lg md:text-2xl mb-3 md:mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-satellite-dish"></i>
+                    </div>
+                    <h3 class="text-sm md:text-xl font-bold text-dark dark:text-white mb-1 md:mb-3 leading-tight">Hyperlocal Feed</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-[11px] md:text-sm leading-relaxed">Post offers or products. Customers within 4-6 KM see it instantly in their feed.</p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="reveal delay-100 bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-4 md:p-8 rounded-xl md:rounded-2xl shadow-sm dark:shadow-none hover:shadow-soft dark:hover:border-primary/50 hover:border-primary/30 transition-all duration-300 group">
+                    <div class="w-10 h-10 md:w-14 md:h-14 rounded-lg md:rounded-xl bg-pink-50 dark:bg-pink-900/20 flex items-center justify-center text-pink-500 text-lg md:text-2xl mb-3 md:mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <h3 class="text-sm md:text-xl font-bold text-dark dark:text-white mb-1 md:mb-3 leading-tight">AI Staff</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-[11px] md:text-sm leading-relaxed">AI chats, negotiates, and books orders 24/7. No human required.</p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="reveal delay-200 bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-4 md:p-8 rounded-xl md:rounded-2xl shadow-sm dark:shadow-none hover:shadow-soft dark:hover:border-primary/50 hover:border-primary/30 transition-all duration-300 group">
+                    <div class="w-10 h-10 md:w-14 md:h-14 rounded-lg md:rounded-xl bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center text-indigo-500 text-lg md:text-2xl mb-3 md:mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-globe"></i>
+                    </div>
+                    <h3 class="text-sm md:text-xl font-bold text-dark dark:text-white mb-1 md:mb-3 leading-tight">Auto Website</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-[11px] md:text-sm leading-relaxed">Get your custom sub-domain — a full e-commerce site ready in 60 seconds.</p>
+                </div>
+                <!-- Feature 4 -->
+                <div class="reveal bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-4 md:p-8 rounded-xl md:rounded-2xl shadow-sm dark:shadow-none hover:shadow-soft dark:hover:border-primary/50 hover:border-primary/30 transition-all duration-300 group">
+                    <div class="w-10 h-10 md:w-14 md:h-14 rounded-lg md:rounded-xl bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center text-emerald-500 text-lg md:text-2xl mb-3 md:mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <h3 class="text-sm md:text-xl font-bold text-dark dark:text-white mb-1 md:mb-3 leading-tight">WhatsApp Brain</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-[11px] md:text-sm leading-relaxed">Run everything from WhatsApp. Receive orders and check analytics easily.</p>
+                </div>
+                <!-- Feature 5 -->
+                <div class="reveal delay-100 bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-4 md:p-8 rounded-xl md:rounded-2xl shadow-sm dark:shadow-none hover:shadow-soft dark:hover:border-primary/50 hover:border-primary/30 transition-all duration-300 group">
+                    <div class="w-10 h-10 md:w-14 md:h-14 rounded-lg md:rounded-xl bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center text-orange-500 text-lg md:text-2xl mb-3 md:mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-regular fa-calendar-check"></i>
+                    </div>
+                    <h3 class="text-sm md:text-xl font-bold text-dark dark:text-white mb-1 md:mb-3 leading-tight">Appointments</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-[11px] md:text-sm leading-relaxed">AI auto-books slots, sends reminders, and manages your entire calendar.</p>
+                </div>
+                <!-- Feature 6 -->
+                <div class="reveal delay-200 bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 p-4 md:p-8 rounded-xl md:rounded-2xl shadow-sm dark:shadow-none hover:shadow-soft dark:hover:border-primary/50 hover:border-primary/30 transition-all duration-300 group">
+                    <div class="w-10 h-10 md:w-14 md:h-14 rounded-lg md:rounded-xl bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center text-purple-500 text-lg md:text-2xl mb-3 md:mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                    <h3 class="text-sm md:text-xl font-bold text-dark dark:text-white mb-1 md:mb-3 leading-tight">Local Analytics</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-[11px] md:text-sm leading-relaxed">Know peak hours, best products, and competitor activity in your area.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="py-24 bg-dark text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary via-dark to-dark"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center max-w-2xl mx-auto mb-20 reveal">
+                <!-- White text clearly visible against dark bg -->
+                <h2 class="text-3xl md:text-4xl font-heading font-bold text-white mb-4">Live in Under 3 Minutes</h2>
+                <p class="text-gray-300 text-lg">Zero technical skills required. We built it for everyone.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-12 relative">
+                <!-- Connecting Line Desktop -->
+                <div class="hidden md:block absolute top-12 left-[15%] right-[15%] h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+
+                <!-- Step 1 -->
+                <div class="reveal text-center relative z-10">
+                    <div class="w-24 h-24 mx-auto bg-darker border-2 border-gray-800 rounded-full flex items-center justify-center text-3xl text-gray-300 mb-6 shadow-glow relative">
+                        <div class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-sm font-bold text-white border-4 border-dark">1</div>
+                        <i class="fa-solid fa-mobile-screen"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Create Profile</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed max-w-xs mx-auto">Enter your shop name, snap a photo, and pick your category. Your AI store goes live instantly.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="reveal delay-100 text-center relative z-10">
+                    <div class="w-24 h-24 mx-auto bg-darker border-2 border-primary/50 rounded-full flex items-center justify-center text-3xl text-primary mb-6 shadow-glow relative">
+                        <div class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-sm font-bold text-white border-4 border-dark">2</div>
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">AI Takes Control</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed max-w-xs mx-auto">Your dedicated AI staff activates. It begins chatting, promoting offers, and booking orders automatically.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="reveal delay-200 text-center relative z-10">
+                    <div class="w-24 h-24 mx-auto bg-darker border-2 border-gray-800 rounded-full flex items-center justify-center text-3xl text-gray-300 mb-6 relative">
+                        <div class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-sm font-bold text-white border-4 border-dark">3</div>
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Watch It Grow</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed max-w-xs mx-auto">Monitor revenue, bookings, and customer retention from a beautiful dashboard. Get weekly WhatsApp reports.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-light dark:bg-slate-900/50">
+        <div class="max-w-7xl mx-auto px-6 mb-12 reveal">
+            <h2 class="text-3xl font-heading font-bold text-dark dark:text-white text-center md:text-left">Built for Every Street Corner</h2>
+        </div>
+        
+        <!-- Strictly 2x grid on mobile, 4x on desktop -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 px-4 md:px-6 max-w-7xl mx-auto reveal delay-100">
+            <!-- Items -->
+            <div class="bg-white dark:bg-slate-800 p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm dark:shadow-none hover:border-primary/40 hover:shadow-soft transition-all group">
+                <i class="fa-solid fa-basket-shopping text-2xl md:text-3xl text-green-500 mb-3 md:mb-4 group-hover:scale-110 transition-transform origin-left"></i>
+                <h4 class="font-bold text-sm md:text-lg text-dark dark:text-white mb-1 md:mb-2">Kirana & Grocery</h4>
+                <p class="text-[11px] md:text-sm text-slate-500 dark:text-slate-400">Daily orders, home delivery dispatch, auto-restock alerts.</p>
+            </div>
+            
+            <div class="bg-white dark:bg-slate-800 p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm dark:shadow-none hover:border-primary/40 hover:shadow-soft transition-all group">
+                <i class="fa-solid fa-scissors text-2xl md:text-3xl text-pink-500 mb-3 md:mb-4 group-hover:scale-110 transition-transform origin-left"></i>
+                <h4 class="font-bold text-sm md:text-lg text-dark dark:text-white mb-1 md:mb-2">Salon & Spa</h4>
+                <p class="text-[11px] md:text-sm text-slate-500 dark:text-slate-400">Auto-booking, staff scheduling, loyalty reward programs.</p>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm dark:shadow-none hover:border-primary/40 hover:shadow-soft transition-all group">
+                <i class="fa-solid fa-screwdriver-wrench text-2xl md:text-3xl text-blue-500 mb-3 md:mb-4 group-hover:scale-110 transition-transform origin-left"></i>
+                <h4 class="font-bold text-sm md:text-lg text-dark dark:text-white mb-1 md:mb-2">Service Providers</h4>
+                <p class="text-[11px] md:text-sm text-slate-500 dark:text-slate-400">Plumber, electrician, AC repair — direct booking and AI quotes.</p>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm dark:shadow-none hover:border-primary/40 hover:shadow-soft transition-all group">
+                <i class="fa-solid fa-utensils text-2xl md:text-3xl text-orange-500 mb-3 md:mb-4 group-hover:scale-110 transition-transform origin-left"></i>
+                <h4 class="font-bold text-sm md:text-lg text-dark dark:text-white mb-1 md:mb-2">Restaurant & Dhaba</h4>
+                <p class="text-[11px] md:text-sm text-slate-500 dark:text-slate-400">Table booking, food pre-orders, real-time delivery tracking.</p>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm dark:shadow-none hover:border-primary/40 hover:shadow-soft transition-all group">
+                <i class="fa-solid fa-shirt text-2xl md:text-3xl text-purple-500 mb-3 md:mb-4 group-hover:scale-110 transition-transform origin-left"></i>
+                <h4 class="font-bold text-sm md:text-lg text-dark dark:text-white mb-1 md:mb-2">Fashion Boutique</h4>
+                <p class="text-[11px] md:text-sm text-slate-500 dark:text-slate-400">Catalog posts, AI size matching, instant flash sale alerts.</p>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm dark:shadow-none hover:border-primary/40 hover:shadow-soft transition-all group">
+                <i class="fa-solid fa-dumbbell text-2xl md:text-3xl text-red-500 mb-3 md:mb-4 group-hover:scale-110 transition-transform origin-left"></i>
+                <h4 class="font-bold text-sm md:text-lg text-dark dark:text-white mb-1 md:mb-2">Gym & Fitness</h4>
+                <p class="text-[11px] md:text-sm text-slate-500 dark:text-slate-400">Membership tracking, slot booking, AI-generated diet plans.</p>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm dark:shadow-none hover:border-primary/40 hover:shadow-soft transition-all group">
+                <i class="fa-solid fa-capsules text-2xl md:text-3xl text-teal-500 mb-3 md:mb-4 group-hover:scale-110 transition-transform origin-left"></i>
+                <h4 class="font-bold text-sm md:text-lg text-dark dark:text-white mb-1 md:mb-2">Medical Pharmacy</h4>
+                <p class="text-[11px] md:text-sm text-slate-500 dark:text-slate-400">Prescription reminders, availability checks, secure delivery.</p>
+            </div>
+            
+            <div class="bg-slate-100/50 dark:bg-slate-800/30 p-4 md:p-6 rounded-xl md:rounded-2xl border border-dashed border-gray-300 dark:border-slate-600 flex flex-col items-center justify-center text-center group cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <div class="w-10 h-10 rounded-full bg-white dark:bg-slate-700 flex items-center justify-center text-gray-400 dark:text-gray-300 shadow-sm mb-3 group-hover:text-primary transition-colors">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+                <h4 class="font-bold text-sm md:text-base text-gray-600 dark:text-gray-400">And 50+ more categories</h4>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-darker text-white" id="stats">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-12 text-center divide-x divide-white/10">
+            <div class="reveal">
+                <div class="text-4xl lg:text-5xl font-heading font-extrabold text-gradient mb-2 stat-num" data-target="60" data-suffix="s">0</div>
+                <div class="text-sm text-gray-400 font-medium">Store Setup Time</div>
+            </div>
+            <div class="reveal delay-100">
+                <div class="text-4xl lg:text-5xl font-heading font-extrabold text-gradient mb-2">24/7</div>
+                <div class="text-sm text-gray-400 font-medium">AI Availability</div>
+            </div>
+            <div class="reveal delay-200">
+                <div class="text-4xl lg:text-5xl font-heading font-extrabold text-gradient mb-2 stat-num" data-target="100" data-suffix="%">0</div>
+                <div class="text-sm text-gray-400 font-medium">Automated Workflow</div>
+            </div>
+            <div class="reveal delay-300 border-none">
+                <div class="text-4xl lg:text-5xl font-heading font-extrabold text-gradient mb-2 stat-num" data-target="0" data-suffix="">100</div>
+                <div class="text-sm text-gray-400 font-medium">Tech Skills Needed</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="py-24 bg-white dark:bg-slate-900">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-12 reveal">
+                <!-- Title Case -->
+                <span class="text-primary font-bold text-sm tracking-wider mb-2 block">Pricing</span>
+                <h2 class="text-3xl md:text-4xl font-heading font-bold text-dark dark:text-white mb-4">Affordable Growth Plans</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-lg">Start free. Upgrade when your business demands it.</p>
+            </div>
+
+            <!-- Toggle -->
+            <div class="flex justify-center items-center gap-4 mb-16 reveal">
+                <span class="text-sm font-semibold text-dark dark:text-white" id="label-monthly">Monthly</span>
+                <button id="billing-toggle" class="w-14 h-8 bg-gray-200 dark:bg-slate-700 rounded-full relative transition-colors focus:outline-none">
+                    <div id="toggle-circle" class="w-6 h-6 bg-white rounded-full absolute top-1 left-1 shadow-sm transition-transform"></div>
+                </button>
+                <span class="text-sm font-semibold text-gray-500 flex items-center gap-2" id="label-yearly">
+                    Yearly <span class="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-[10px] font-bold px-2 py-0.5 rounded-full">Save 30%</span>
+                </span>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto items-center">
+                <!-- Starter -->
+                <div class="reveal bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-3xl p-8 hover:shadow-soft transition-shadow">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-dark dark:text-white">Starter</h3>
+                        <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 bg-gray-100 dark:bg-slate-700 px-2 py-1 rounded">Forever Free</span>
+                    </div>
+                    <div class="text-4xl font-heading font-extrabold text-dark dark:text-white mb-6">₹0<span class="text-base font-normal text-slate-500">/mo</span></div>
+                    <button class="open-modal-btn w-full bg-white dark:bg-slate-800 border-2 border-gray-200 dark:border-slate-600 text-dark dark:text-white font-semibold py-3 rounded-xl hover:border-gray-300 dark:hover:border-slate-500 transition-colors mb-8">Start Free</button>
+                    
+                    <ul class="space-y-4 text-sm text-dark dark:text-slate-300">
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> 1 Shop Profile</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> Local Feed (10 posts/mo)</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> Basic AI Chat (50 replies)</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> Auto Sub-domain Website</li>
+                        <li class="flex items-center gap-3 text-slate-500 dark:text-slate-500 opacity-60"><i class="fa-solid fa-minus"></i> Advanced AI Negotiation</li>
+                        <li class="flex items-center gap-3 text-slate-500 dark:text-slate-500 opacity-60"><i class="fa-solid fa-minus"></i> Appointment System</li>
+                    </ul>
+                </div>
+
+                <!-- Professional -->
+                <div class="reveal delay-100 bg-darker dark:bg-slate-800 rounded-3xl p-8 shadow-2xl relative transform lg:-translate-y-4 border border-gray-800 dark:border-primary/20">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-primary text-white text-[10px] font-bold px-4 py-1 rounded-full shadow-lg">Most Popular</div>
+                    
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-white">Professional</h3>
+                    </div>
+                    <div class="text-4xl font-heading font-extrabold text-white mb-6 transition-all" id="price-pro">₹999<span class="text-base font-normal text-gray-400">/mo</span></div>
+                    <button class="open-modal-btn w-full bg-gradient-primary text-white font-semibold py-3 rounded-xl hover:shadow-glow transition-all mb-8">Get Professional</button>
+                    
+                    <ul class="space-y-4 text-sm text-gray-300">
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-primary"></i> Everything in Starter</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-primary"></i> Unlimited Posts & Replies</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-primary"></i> Full AI Negotiation</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-primary"></i> Appointment System</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-primary"></i> WhatsApp Biz Integration</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-primary"></i> Advanced Analytics</li>
+                    </ul>
+                </div>
+
+                <!-- Enterprise -->
+                <div class="reveal delay-200 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-3xl p-8 hover:shadow-soft transition-shadow">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-dark dark:text-white">Enterprise</h3>
+                        <span class="text-xs font-semibold text-primary bg-primary/10 px-2 py-1 rounded">Scale</span>
+                    </div>
+                    <div class="text-4xl font-heading font-extrabold text-dark dark:text-white mb-6 transition-all" id="price-ent">₹4,999<span class="text-base font-normal text-slate-500">/mo</span></div>
+                    <button class="open-modal-btn w-full bg-dark dark:bg-slate-700 text-white font-semibold py-3 rounded-xl hover:bg-darker dark:hover:bg-slate-600 transition-colors mb-8">Contact Sales</button>
+                    
+                    <ul class="space-y-4 text-sm text-dark dark:text-slate-300">
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> Everything in Professional</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> Multi-store (up to 20)</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> Marketing Automation</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> AI Video Ad Gen</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> Dedicated Account Mgr</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-green-500"></i> Custom API Access</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <p class="text-center text-sm text-slate-500 dark:text-slate-400 mt-10"><i class="fa-solid fa-gift text-primary mr-1"></i> All paid plans include a 7-day free trial. No credit card required to start.</p>
+        </div>
+    </section>
+
+    <section id="testimonials" class="py-24 bg-light dark:bg-slate-900/50">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-3xl font-heading font-bold text-dark dark:text-white text-center mb-16 reveal">Built for India's Local Businesses</h2>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="reveal bg-white dark:bg-slate-800 p-8 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm dark:shadow-none">
+                    <div class="flex gap-1 text-yellow-400 text-sm mb-6">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-dark dark:text-slate-300 italic mb-8 text-sm leading-relaxed">"Beta testing mein hi mujhe samajh aa gaya tha ki ye tool game-changer hai. AI khud messages handle karta hai, aur mujhe sir dard nahi hota."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">RS</div>
+                        <div>
+                            <div class="font-bold text-dark dark:text-white text-sm">Rajesh Sharma</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">Early Adopter, Pune</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal delay-100 bg-white dark:bg-slate-800 p-8 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm dark:shadow-none">
+                    <div class="flex gap-1 text-yellow-400 text-sm mb-6">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-dark dark:text-slate-300 italic mb-8 text-sm leading-relaxed">"Mera appointment system pehle ek purane register mein tha. Ab digital ho gaya hai. Clients ko bhi easy lagta hai direct book karna."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">PG</div>
+                        <div>
+                            <div class="font-bold text-dark dark:text-white text-sm">Priya Gupta</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">Salon Owner, Delhi</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal delay-200 bg-white dark:bg-slate-800 p-8 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm dark:shadow-none">
+                    <div class="flex gap-1 text-yellow-400 text-sm mb-6">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-dark dark:text-slate-300 italic mb-8 text-sm leading-relaxed">"Hyperlocal feed feature best laga mujhe. Local radius me reach badhana zaroori hai, ye system usme kaafi help karta hai."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">AK</div>
+                        <div>
+                            <div class="font-bold text-dark dark:text-white text-sm">Amit Kumar</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">Gym Setup, Mumbai</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-white dark:bg-slate-900">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-3xl font-heading font-bold text-dark dark:text-white text-center mb-12 reveal">Why We Beat the Competition</h2>
+            
+            <div class="overflow-x-auto rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm dark:shadow-none reveal">
+                <table class="w-full text-left text-sm whitespace-nowrap">
+                    <thead class="bg-gray-50 dark:bg-slate-800/80 border-b border-gray-200 dark:border-slate-700 text-gray-700 dark:text-gray-300 font-semibold text-base">
+                        <tr>
+                            <th class="p-4 py-5">Core Features</th>
+                            <th class="p-4 py-5 bg-primary/5 dark:bg-primary/10 text-primary font-bold flex items-center">
+                                <!-- MINI LOGO IMAGE FOR TABLE (To change size, modify w-6 h-6 below) -->
+                                <div class="w-6 h-6 mr-1.5 text-primary drop-shadow-sm inline-flex items-center justify-center">
+                                    <svg viewBox="0 0 1000 1000" class="w-full h-full">
+                                        <g fill="currentColor">
+                                            <use href="#brand-roof" />
+                                            <use href="#brand-frame-left" />
+                                            <use href="#brand-frame-right" />
+                                            <use href="#brand-pin" />
+                                        </g>
+                                    </svg>
+                                </div>
+                                Storelligent
+                            </th>
+                            <th class="p-4 py-5">Justdial</th>
+                            <th class="p-4 py-5">Shopify</th>
+                            <th class="p-4 py-5">WA Business</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 dark:divide-slate-700 bg-white dark:bg-slate-800 text-dark dark:text-slate-300">
+                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
+                            <td class="p-4 font-medium">Hyperlocal Customer Discovery</td>
+                            <td class="p-4 bg-primary/5 dark:bg-primary/10"><i class="fa-solid fa-check text-primary"></i></td>
+                            <td class="p-4 text-gray-300 dark:text-gray-600"><i class="fa-solid fa-minus"></i></td>
+                            <td class="p-4 text-gray-300 dark:text-gray-600"><i class="fa-solid fa-minus"></i></td>
+                            <td class="p-4 text-gray-300 dark:text-gray-600"><i class="fa-solid fa-minus"></i></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
+                            <td class="p-4 font-medium">AI Price Negotiation (Bargaining)</td>
+                            <td class="p-4 bg-primary/5 dark:bg-primary/10"><i class="fa-solid fa-check text-primary"></i></td>
+                            <td class="p-4 text-gray-300 dark:text-gray-600"><i class="fa-solid fa-minus"></i></td>
+                            <td class="p-4 text-gray-300 dark:text-gray-600"><i class="fa-solid fa-minus"></i></td>
+                            <td class="p-4 text-gray-300 dark:text-gray-600"><i class="fa-solid fa-minus"></i></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
+                            <td class="p-4 font-medium">Setup Completely via Phone</td>
+                            <td class="p-4 bg-primary/5 dark:bg-primary/10"><i class="fa-solid fa-check text-primary"></i></td>
+                            <td class="p-4 text-gray-300 dark:text-gray-600"><i class="fa-solid fa-minus"></i></td>
+                            <td class="p-4 text-gray-300 dark:text-gray-600"><i class="fa-solid fa-minus"></i></td>
+                            <td class="p-4 text-yellow-600 dark:text-yellow-500 text-xs font-semibold">Basic Only</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
+                            <td class="p-4 font-medium">Auto-reply to Voice Notes</td>
+                            <td class="p-4 bg-primary/5 dark:bg-primary/10"><i class="fa-solid fa-check text-primary"></i></td>
+                            <td class="p-4 text-gray-300 dark:text-gray-600"><i class="fa-solid fa-minus"></i></td>
+                            <td class="p-4 text-gray-300 dark:text-gray-600"><i class="fa-solid fa-minus"></i></td>
+                            <td class="p-4 text-gray-300 dark:text-gray-600"><i class="fa-solid fa-minus"></i></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
+                            <td class="p-4 font-medium">AI Inventory from Photo Upload</td>
+                            <td class="p-4 bg-primary/5 dark:bg-primary/10"><i class="fa-solid fa-check text-primary"></i></td>
+                            <td class="p-4 text-gray-300 dark:text-gray-600"><i class="fa-solid fa-minus"></i></td>
+                            <td class="p-4 text-gray-300 dark:text-gray-600"><i class="fa-solid fa-minus"></i></td>
+                            <td class="p-4 text-gray-300 dark:text-gray-600"><i class="fa-solid fa-minus"></i></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
+                            <td class="p-4 font-medium">Zero Commission Fees</td>
+                            <td class="p-4 bg-primary/5 dark:bg-primary/10"><i class="fa-solid fa-check text-primary"></i></td>
+                            <td class="p-4 text-gray-300 dark:text-gray-600"><i class="fa-solid fa-minus"></i></td>
+                            <td class="p-4 text-gray-300 dark:text-gray-600"><i class="fa-solid fa-minus"></i></td>
+                            <td class="p-4 text-gray-300 dark:text-gray-600"><i class="fa-solid fa-minus"></i></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors border-t-2 border-gray-100 dark:border-slate-700">
+                            <td class="p-4 font-medium">Setup Time</td>
+                            <td class="p-4 bg-primary/5 dark:bg-primary/10 font-bold text-primary">3 Minutes</td>
+                            <td class="p-4 text-gray-500 dark:text-gray-400">Days</td>
+                            <td class="p-4 text-gray-500 dark:text-gray-400">Weeks</td>
+                            <td class="p-4 text-gray-500 dark:text-gray-400">Minutes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-light dark:bg-slate-900/50">
+        <div class="max-w-3xl mx-auto px-6">
+            <h2 class="text-3xl font-heading font-bold text-dark dark:text-white text-center mb-12 reveal">Frequently Asked Questions</h2>
+            
+            <div class="space-y-4 reveal delay-100">
+                <div class="faq-item bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl overflow-hidden transition-all">
+                    <button class="faq-btn w-full px-6 py-5 flex justify-between items-center focus:outline-none text-left">
+                        <span class="font-semibold text-dark dark:text-white">Kya mujhe high-end smartphone ki zaroorat hai?</span>
+                        <i class="fa-solid fa-plus text-primary transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 bg-gray-50 dark:bg-slate-800/50">
+                        <p class="p-6 pt-0 text-slate-500 dark:text-slate-400 text-sm leading-relaxed">Haan, sirf ek basic Android phone chahiye. iOS bhi supported hai. Storelligent 2G/3G networks par bhi smooth kaam karta hai.</p>
+                    </div>
+                </div>
+                <div class="faq-item bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl overflow-hidden transition-all">
+                    <button class="faq-btn w-full px-6 py-5 flex justify-between items-center focus:outline-none text-left">
+                        <span class="font-semibold text-dark dark:text-white">AI kaise jaanta hai mere products ke baare mein?</span>
+                        <i class="fa-solid fa-plus text-primary transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 bg-gray-50 dark:bg-slate-800/50">
+                        <p class="p-6 pt-0 text-slate-500 dark:text-slate-400 text-sm leading-relaxed">Jab aap onboard karte ho, aap apne products add karte ho (photos + price). AI use padh ke khud customer se baat karta hai. Aap jitna zyada add karoge, AI utna better perform karega.</p>
+                    </div>
+                </div>
+                <div class="faq-item bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl overflow-hidden transition-all">
+                    <button class="faq-btn w-full px-6 py-5 flex justify-between items-center focus:outline-none text-left">
+                        <span class="font-semibold text-dark dark:text-white">Mera data safe hai kya?</span>
+                        <i class="fa-solid fa-plus text-primary transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 bg-gray-50 dark:bg-slate-800/50">
+                        <p class="p-6 pt-0 text-slate-500 dark:text-slate-400 text-sm leading-relaxed">Bilkul. Hum secure servers use karte hain. Aapka data kabhi kisi third party ko share nahi hota.</p>
+                    </div>
+                </div>
+                <div class="faq-item bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl overflow-hidden transition-all">
+                    <button class="faq-btn w-full px-6 py-5 flex justify-between items-center focus:outline-none text-left">
+                        <span class="font-semibold text-dark dark:text-white">Refund policy kya hai?</span>
+                        <i class="fa-solid fa-plus text-primary transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 bg-gray-50 dark:bg-slate-800/50">
+                        <p class="p-6 pt-0 text-slate-500 dark:text-slate-400 text-sm leading-relaxed">7-day free trial mein koi charge nahi lagega. Uske baad bhi humari 30-day money-back guarantee hai — no questions asked.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-gradient-primary relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIvPjwvc3ZnPg==')] opacity-30"></div>
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10 reveal">
+            <h2 class="text-4xl md:text-5xl font-heading font-extrabold text-white mb-6">Your Shop Deserves an AI Team</h2>
+            <p class="text-xl text-primaryLight mb-10 opacity-90">Join the smart shop owners who are upgrading their business. Start free today.</p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mb-10">
+                <button class="open-modal-btn bg-white text-primary px-8 py-4 rounded-full font-bold shadow-xl hover:-translate-y-1 transition-transform flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-rocket"></i> Start For Free — No Card Needed
+                </button>
+                <button class="open-modal-btn bg-transparent border-2 border-white/30 text-white px-8 py-4 rounded-full font-bold hover:bg-white/10 transition-colors flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-mobile-screen"></i> Download App
+                </button>
+            </div>
+
+            <div class="flex justify-center gap-4 text-white">
+                <div class="flex items-center gap-2 bg-black/20 backdrop-blur border border-white/10 px-4 py-2 rounded-lg text-sm">
+                    <i class="fa-brands fa-google-play text-lg"></i> Google Play
+                </div>
+                <div class="flex items-center gap-2 bg-black/20 backdrop-blur border border-white/10 px-4 py-2 rounded-lg text-sm">
+                    <i class="fa-brands fa-apple text-lg mb-1"></i> App Store
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-gray-400 py-16 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+            <!-- Brand -->
+            <div>
+                <a href="#" class="flex items-center gap-2 mb-4 text-white group">
+                    <!-- FOOTER LOGO IMAGE (To change size, modify w-10 h-10 below) -->
+                    <div class="w-10 h-10 text-primary drop-shadow-md hover:opacity-80 transition-all duration-200 active:scale-90 cursor-pointer animate-idle flex items-center justify-center">
+                        <svg viewBox="0 0 1000 1000" class="w-full h-full">
+                            <g fill="currentColor">
+                                <use href="#brand-roof" />
+                                <use href="#brand-frame-left" />
+                                <use href="#brand-frame-right" />
+                                <use href="#brand-pin" />
+                            </g>
+                        </svg>
+                    </div>
+                    <span class="font-heading font-bold text-lg">Storelligent</span>
+                </a>
+                <p class="text-sm mb-6">Building the future of AI-powered local commerce in India.</p>
+                <div class="flex gap-4">
+                    <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <!-- Links -->
+            <div>
+                <h4 class="text-white font-semibold mb-4">Product</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#features" class="hover:text-primary transition-colors">Features</a></li>
+                    <li><a href="#pricing" class="hover:text-primary transition-colors">Pricing</a></li>
+                    <li><a href="#how-it-works" class="hover:text-primary transition-colors">How It Works</a></li>
+                    <li><a href="#" class="hover:text-primary transition-colors">Download App</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-4">Company</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-primary transition-colors">About Us</a></li>
+                    <li><a href="#" class="hover:text-primary transition-colors">Careers</a></li>
+                    <li><a href="#" class="hover:text-primary transition-colors">Blog</a></li>
+                    <li><a href="#" class="hover:text-primary transition-colors">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-4">Legal</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-primary transition-colors">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-primary transition-colors">Terms of Service</a></li>
+                    <li><a href="#" class="hover:text-primary transition-colors">Refund Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
+            <p>&copy; 2026 Storelligent Technologies Pvt. Ltd. | Made with ❤️ in India 🇮🇳</p>
+            <div class="flex gap-4">
+                <span><i class="fa-solid fa-lock mr-1"></i> SSL Secured</span>
+                <span><i class="fa-solid fa-shield-halved mr-1"></i> Data Protected</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Authentication Modal (With standard case label) -->
+    <div id="auth-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-dark/60 backdrop-blur-sm modal-close cursor-pointer"></div>
+        <div class="relative bg-white dark:bg-slate-800 rounded-3xl w-full max-w-md p-8 shadow-2xl transform scale-95 opacity-0 transition-all duration-300" id="modal-panel">
+            <button class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors modal-close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary text-xl mb-4">
+                <i class="fa-brands fa-whatsapp"></i>
+            </div>
+            <h3 class="text-2xl font-heading font-bold text-dark dark:text-white mb-2">Welcome to Storelligent</h3>
+            <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Enter your WhatsApp number to get early access instantly.</p>
+            
+            <form id="login-form">
+                <div class="flex flex-col gap-2 mb-6">
+                    <!-- Standard Case -->
+                    <label class="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-wide">Mobile Number</label>
+                    <div class="flex border border-gray-300 dark:border-slate-600 rounded-xl overflow-hidden focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all" id="phone-container">
+                        <div class="bg-gray-50 dark:bg-slate-700 px-4 py-3 border-r border-gray-300 dark:border-slate-600 text-dark dark:text-white font-medium flex items-center gap-2">
+                            🇮🇳 +91
+                        </div>
+                        <input type="tel" id="phone-input" class="w-full px-4 py-3 outline-none text-dark dark:text-white bg-white dark:bg-slate-800 font-medium" placeholder="Enter 10 digits" pattern="[0-9]{10}" maxlength="10" required>
+                    </div>
+                </div>
+                <button type="submit" id="submit-btn" class="w-full bg-gradient-primary text-white font-bold py-3.5 rounded-xl hover:shadow-glow transition-all flex items-center justify-center gap-2">
+                    Send OTP <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+            <p class="text-[10px] text-center text-gray-400 mt-4">By continuing, you agree to our Terms of Service & Privacy Policy.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            /* --- 1. Navbar Scroll Effect --- */
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('glass-nav');
+                    navbar.classList.remove('py-5');
+                    navbar.classList.add('py-3');
+                } else {
+                    navbar.classList.remove('glass-nav');
+                    navbar.classList.remove('py-3');
+                    navbar.classList.add('py-5');
+                }
+            });
+
+            /* --- 2. Mobile Menu Toggle --- */
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileIcon = mobileBtn.querySelector('i');
+
+            mobileBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                mobileMenu.classList.toggle('flex');
+                if (mobileMenu.classList.contains('hidden')) {
+                    mobileIcon.classList.remove('fa-xmark');
+                    mobileIcon.classList.add('fa-bars');
+                } else {
+                    mobileIcon.classList.remove('fa-bars');
+                    mobileIcon.classList.add('fa-xmark');
+                }
+            });
+
+            document.querySelectorAll('#mobile-menu a, #mobile-menu button').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenu.classList.remove('flex');
+                    mobileIcon.classList.replace('fa-xmark', 'fa-bars');
+                });
+            });
+
+            /* --- 3. Scroll Reveal Animations --- */
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+            /* --- 4. Rotating Hero Text Animation --- */
+            const words = ["24/7 AI Business", "Smart Digital Store", "Automated Machine", "Hyperlocal Brand", "Modern Local Shop"];
+            let wordIndex = 0;
+            const textEl = document.getElementById('rotating-text');
+
+            setInterval(() => {
+                textEl.classList.remove('fade-in');
+                textEl.classList.add('fade-out');
+
+                setTimeout(() => {
+                    wordIndex = (wordIndex + 1) % words.length;
+                    textEl.textContent = words[wordIndex];
+                    
+                    textEl.classList.remove('fade-out');
+                    textEl.classList.add('fade-in');
+                }, 600); 
+            }, 3500);
+
+            /* --- 5. Pricing Toggle Logic --- */
+            const billingToggle = document.getElementById('billing-toggle');
+            const toggleCircle = document.getElementById('toggle-circle');
+            const labelMonthly = document.getElementById('label-monthly');
+            const labelYearly = document.getElementById('label-yearly');
+            
+            const pricePro = document.getElementById('price-pro');
+            const priceEnt = document.getElementById('price-ent');
+            let isYearly = false;
+
+            billingToggle.addEventListener('click', () => {
+                isYearly = !isYearly;
+                if (isYearly) {
+                    toggleCircle.style.transform = 'translateX(16px)';
+                    billingToggle.classList.add('bg-primary');
+                    billingToggle.classList.remove('bg-gray-200');
+                    billingToggle.classList.remove('dark:bg-slate-700');
+                    
+                    labelYearly.classList.add('text-dark', 'dark:text-white');
+                    labelYearly.classList.remove('text-gray-500');
+                    
+                    labelMonthly.classList.add('text-gray-500');
+                    labelMonthly.classList.remove('text-dark', 'dark:text-white');
+                } else {
+                    toggleCircle.style.transform = 'translateX(0)';
+                    billingToggle.classList.remove('bg-primary');
+                    billingToggle.classList.add('bg-gray-200', 'dark:bg-slate-700');
+                    
+                    labelMonthly.classList.add('text-dark', 'dark:text-white');
+                    labelMonthly.classList.remove('text-gray-500');
+                    
+                    labelYearly.classList.add('text-gray-500');
+                    labelYearly.classList.remove('text-dark', 'dark:text-white');
+                }
+                pricePro.style.opacity = '0';
+                priceEnt.style.opacity = '0';
+                setTimeout(() => {
+                    if (isYearly) {
+                        pricePro.innerHTML = '₹699<span class="text-base font-normal text-gray-400">/mo</span>';
+                        priceEnt.innerHTML = '₹3,499<span class="text-base font-normal text-slate-500">/mo</span>';
+                    } else {
+                        pricePro.innerHTML = '₹999<span class="text-base font-normal text-gray-400">/mo</span>';
+                        priceEnt.innerHTML = '₹4,999<span class="text-base font-normal text-slate-500">/mo</span>';
+                    }
+                    pricePro.style.opacity = '1';
+                    priceEnt.style.opacity = '1';
+                }, 200);
+            });
+
+            /* --- 6. FAQ Accordion --- */
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const btn = item.querySelector('.faq-btn');
+                const content = item.querySelector('.faq-content');
+                const icon = item.querySelector('i');
+
+                btn.addEventListener('click', () => {
+                    const isOpen = content.style.maxHeight;
+                    faqItems.forEach(otherItem => {
+                        otherItem.querySelector('.faq-content').style.maxHeight = null;
+                        otherItem.querySelector('i').classList.remove('rotate-45');
+                        otherItem.classList.remove('border-primary/50', 'dark:border-primary/50');
+                    });
+                    if (!isOpen) {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        icon.classList.add('rotate-45');
+                        item.classList.add('border-primary/50', 'dark:border-primary/50');
+                    }
+                });
+            });
+
+            /* --- 7. Number Counter (Stats) --- */
+            const statsSection = document.getElementById('stats');
+            let counted = false;
+
+            const statObserver = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting && !counted) {
+                    counted = true;
+                    document.querySelectorAll('.stat-num').forEach(counter => {
+                        const target = parseFloat(counter.getAttribute('data-target'));
+                        const suffix = counter.getAttribute('data-suffix') || '';
+                        const duration = 2000; 
+                        const startTime = performance.now();
+
+                        const updateCounter = (currentTime) => {
+                            const elapsedTime = currentTime - startTime;
+                            const progress = Math.min(elapsedTime / duration, 1);
+                            const easeOut = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+                            const currentVal = target * easeOut;
+
+                            counter.innerText = Math.floor(currentVal) + suffix;
+
+                            if (progress < 1) {
+                                requestAnimationFrame(updateCounter);
+                            } else {
+                                counter.innerText = target + suffix;
+                            }
+                        };
+                        requestAnimationFrame(updateCounter);
+                    });
+                }
+            }, { threshold: 0.5 });
+            
+            if (statsSection) statObserver.observe(statsSection);
+
+            /* --- 8. Modal Logic --- */
+            const modal = document.getElementById('auth-modal');
+            const modalPanel = document.getElementById('modal-panel');
+            const openBtns = document.querySelectorAll('.open-modal-btn');
+            const closeElements = document.querySelectorAll('.modal-close');
+            const form = document.getElementById('login-form');
+            const submitBtn = document.getElementById('submit-btn');
+            const phoneInput = document.getElementById('phone-input');
+            const phoneContainer = document.getElementById('phone-container');
+
+            const openModal = (e) => {
+                e.preventDefault();
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modalPanel.classList.remove('scale-95', 'opacity-0');
+                    modalPanel.classList.add('scale-100', 'opacity-100');
+                    phoneInput.focus();
+                }, 10);
+                document.body.style.overflow = 'hidden';
+            };
+
+            const closeModal = () => {
+                modalPanel.classList.remove('scale-100', 'opacity-100');
+                modalPanel.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }, 300);
+            };
+
+            openBtns.forEach(btn => btn.addEventListener('click', openModal));
+            closeElements.forEach(el => el.addEventListener('click', closeModal));
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (phoneInput.value.length === 10) {
+                    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+                    setTimeout(() => {
+                        submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> OTP Sent';
+                        submitBtn.classList.replace('bg-gradient-primary', 'bg-green-500');
+                        setTimeout(closeModal, 1500);
+                    }, 1500);
+                } else {
+                    phoneContainer.style.transform = 'translateX(5px)';
+                    setTimeout(() => phoneContainer.style.transform = 'translateX(-5px)', 100);
+                    setTimeout(() => phoneContainer.style.transform = 'translateX(5px)', 200);
+                    setTimeout(() => phoneContainer.style.transform = 'translateX(0)', 300);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
